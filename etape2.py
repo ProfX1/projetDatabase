@@ -13,7 +13,7 @@ try:
     cursor.execute("SET autocommit = 0")
     cursor.execute("BEGIN WORK")
     
-    cursor.execute("select * from products")
+    cursor.execute("select quantity from products")
     
     
     for row in cursor.fetchall():
