@@ -12,10 +12,10 @@ try:
     
     cursor.execute("SET autocommit = 0")
     cursor.execute("BEGIN WORK")
-    cursor.execute("entre commande ici")
+    cursor.execute("update products set quantity = 15 where product_id=1")
     cursor.execute("select quantity from products")
     
-    
+
     for row in cursor.fetchall():
         print(row)
     print('est-ce que tout est bon yes or no')
