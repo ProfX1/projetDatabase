@@ -12,7 +12,7 @@ try:
     
     cursor.execute("SET autocommit = 0")
     cursor.execute("BEGIN WORK")
-    
+    cursor.execute("entre commande ici")
     cursor.execute("select quantity from products")
     
     
