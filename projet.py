@@ -9,7 +9,7 @@ try:
     print("connexion reussie via DSN avec UID et PWD")
     
     cursor = cnxn.cursor()
-    cursor.execute("select * from customers")
+    cursor.execute("select * from products")
     for row in cursor.fetchall():
         print(row)
         
