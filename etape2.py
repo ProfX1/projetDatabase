@@ -18,7 +18,12 @@ try:
     
     for row in cursor.fetchall():
         print(row)
-        
+    print('est-ce que tout est bon yes or no')
+    answer = input()
+    if answer =='yes':    
+        cnxn.execute('COMMIT')
+    else :
+        cnxn.execute('rollback')
     cnxn.close()
     
 except pyodbc.Error as ex:
