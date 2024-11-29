@@ -9,7 +9,12 @@ try:
     print("connexion reussie via DSN avec UID et PWD")
     
     cursor = cnxn.cursor()
+    
+    cursor.execute("SET autocommit = 0")
+    
     cursor.execute("select * from customers")
+    
+    
     for row in cursor.fetchall():
         print(row)
         
