@@ -1,6 +1,6 @@
 import pyodbc
 
-dsn_name = "christmasshop"
+dsn_name = "projetmysql"
 user_id = "elf"
 password = "admin"
 
