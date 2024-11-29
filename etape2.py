@@ -11,6 +11,7 @@ try:
     cursor = cnxn.cursor()
     
     cursor.execute("SET autocommit = 0")
+    cursor.execute("BEGIN WORK")
     
     cursor.execute("select * from customers")
     
