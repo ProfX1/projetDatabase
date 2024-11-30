@@ -34,7 +34,7 @@ try:
         print('please enter a phone number for the customer')
         phone_number = input()
         insert_customer = "insert into customers (customer_name, customer_phone_number) values(?, ?)"
-        cursor.execute(insert_customer, name, phone_number)
+        cursor.execute(insert_customer, (name, phone_number))
         cursor.execute(select_id)
         customer_id_tuple = cursor.fetchone()
         
@@ -54,7 +54,7 @@ try:
         print('please enter a quantity that is getting ordered for this item')
         qty = float(input())
         insert_item = "insert into products (product_name, price, quantity) values(?, ?, ?)"
-        cursor.execute(insert_item, item, price, qty)
+        cursor.execute(insert_item, (item, price, qty))
         cursor.execute(select_id)
         item_id_tuple = cursor.fetchone()
     item_id = item_id_tuple[0]
@@ -75,7 +75,7 @@ try:
     #check that the item is available
     if qty_check >= quantity:
         print('good to go')
-        cursor.execute(update_quantity1, quantity, item)
+        cursor.execute(update_quantity1, (quantity, item))
         
     #order more of the item requested(put it on order)
     else:
@@ -84,8 +84,8 @@ try:
         #check that the order will actually work once the new amount is done
         if (qty_check + amount_order) >= quantity:
             
-            cursor.execute(update_quantity2, amount_order, item)
-            cursor.execute(update_quantity1, quantity, item)
+            cursor.execute(update_quantity2, (amount_order, item))
+            cursor.execute(update_quantity1, (quantity, item))
             insert_order_products = "insert into order_products (product_id) values (?)"
             cursor.execute(insert_order_products, item_id)
             
@@ -113,7 +113,7 @@ try:
     if answer =='yes':
         # now to add the sale in the database
         insert_sales = "insert into sales (customer_id, product_id, quantity) values (?, ?, ?)"
-        cursor.execute(insert_sales, customer_id, item_id, quantity)
+        cursor.execute(insert_sales, (customer_id, item_id, quantity))
         cursor.execute(select_id)
         order_confirm = int(cursor.fetchone()[0])
         order_confirm_query = """
