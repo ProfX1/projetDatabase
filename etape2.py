@@ -37,6 +37,8 @@ try:
         cursor.execute(insert_customer, (name, phone_number))
         cursor.execute(select_id)
         customer_id_tuple = cursor.fetchone()
+    else:
+        print('customer is in the database')
         
     customer_id = customer_id_tuple[0]
     print (customer_id)
@@ -57,6 +59,8 @@ try:
         cursor.execute(insert_item, (item, price, qty))
         cursor.execute(select_id)
         item_id_tuple = cursor.fetchone()
+    else:
+        print("this item is in the database")
     item_id = item_id_tuple[0]
     print (item_id)
     #confirmation stuff product again
@@ -75,7 +79,8 @@ try:
     #check that the item is available
     if qty_check >= quantity:
         print('good to go')
-        cursor.execute(update_quantity1, (quantity, item))
+        print('you have enough of this item')
+        cursor.execute(update_quantity1, (quantity, item_id))
         
     #order more of the item requested(put it on order)
     else:
@@ -84,21 +89,22 @@ try:
         #check that the order will actually work once the new amount is done
         if (qty_check + amount_order) >= quantity:
             
-            cursor.execute(update_quantity2, (amount_order, item))
-            cursor.execute(update_quantity1, (quantity, item))
+            cursor.execute(update_quantity2, (amount_order, item_id))
+            cursor.execute(update_quantity1, (quantity, item_id))
             insert_order_products = "insert into order_products (product_id) values (?)"
             cursor.execute(insert_order_products, item_id)
             
         else:
             cursor.execute("ROLLBACK")
-        
+    print('here is your order')    
     for row in customer_query:
         print(row)
     for row in select_query:
         print(row)
     for row in quantity_query:
         print(row)
-        
+    print('you ordered ', quantity, ' of this item')
+    print('end of order')
     # now to add the sale in the database
     
     
@@ -124,6 +130,9 @@ try:
         products on products.product_id = sales.product_id
         where sale_id = ?"""
         cursor.execute(order_confirm_query, order_confirm)
+        final_order = cursor.fetchall()
+        for row in final_order:
+            print(row)
         
         print('est-ce que tout est bon yes or no')
         answer1 = input()
