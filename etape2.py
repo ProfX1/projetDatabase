@@ -14,7 +14,7 @@ try:
     cursor.execute("BEGIN WORK")
     print('who is ordering something')
     name=input()
-    print ('what is he ordering')
+    print ('what is the customer ordering')
     item=input()
     print('how many of this item')
     quantity=int(input())
@@ -114,7 +114,7 @@ try:
 
     # for row in cursor.fetchall():
     #     print(row)
-    print('est-ce que tout est bon yes or no')
+    print('is everything correct yes or no')
     answer = input().strip().lower()
     if answer =='yes':
         # now to add the sale in the database
@@ -134,7 +134,7 @@ try:
         for row in final_order:
             print(row)
         
-        print('est-ce que tout est bon yes or no')
+        print('is everything correct yes or no')
         answer1 = input()
         if answer1 == 'yes':
                 
