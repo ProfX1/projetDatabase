@@ -52,7 +52,7 @@ try:
     item_id_tuple = cursor.fetchone()
     if item_id_tuple is None:
         print('please enter a price for the item')
-        price = int(input())
+        price = float(input())
         print('please enter a quantity that is getting ordered for this item')
         qty = float(input())
         insert_item = "insert into products (product_name, price, quantity) values(?, ?, ?)"
