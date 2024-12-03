@@ -55,10 +55,12 @@ try:
         price = float(input())
         print('please enter a quantity that is getting ordered for this item')
         qty = float(input())
+        insert_order_products = "insert into order_products (product_id) values (?)"
         insert_item = "insert into products (product_name, price, quantity) values(?, ?, ?)"
         cursor.execute(insert_item, (item, price, qty))
         cursor.execute(select_id)
         item_id_tuple = cursor.fetchone()
+        cursor.execute(insert_order_products, item_id_tuple[0])
     else:
         print("this item is in the database")
     item_id = item_id_tuple[0]

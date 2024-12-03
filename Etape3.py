@@ -191,7 +191,11 @@ try:
             cursor.execute(update_quantity2, (amount_order, item_id))
             cursor.execute(update_quantity1, (quantity, item_id))
             insert_order_products = "insert into order_products (product_id) values (?)"
-            cursor.execute(insert_order_products, item_id)
+            insert_item = "insert into products (product_name, price, quantity) values(?, ?, ?)"
+            cursor.execute(insert_item, (item, price, qty))
+            cursor.execute(select_id)
+            item_id_tuple = cursor.fetchone()
+            cursor.execute(insert_order_products, item_id_tuple[0])
             
         else:
             cursor.execute("ROLLBACK")
