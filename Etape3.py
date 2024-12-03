@@ -33,16 +33,92 @@ try:
     #lock tables to work on the database without interruptions from another user
     print("Locking tables...")
     cursor.execute("LOCK TABLES customers WRITE, products WRITE, sales WRITE, order_products WRITE, v_sales WRITE")
+    #select last inserted id
+    select_id = "SELECT LAST_INSERT_ID()"
+    
     #start order
     print('who is ordering something')
     name=input()
+    
+    #confirmation stuff customer
+    select_customer_query = "select customer_id, customer_name from customers where customer_name = ?"
+    cursor.execute(select_customer_query, name)
+    customer_query = cursor.fetchall()
+    #select customer id
+    select_customer_id = "select customer_id from customers where customer_name = ?"
+    cursor.execute(select_customer_id, name)
+    customer_id_tuple = cursor.fetchone()
+    ########
+    password_not_passed = True
+    tries = 3
+    while password_not_passed : 
+        print('please enter the password for this customer')
+        customer_password = input()
+        if customer_id_tuple is None:
+            print('please enter a phone number for the customer')
+            phone_number = input()
+            insert_customer_pass = """INSERT INTO customers (customer_name, customer_phone_number, password)
+            VALUES (?, ?, AES_ENCRYPT(?, 'Christmas'))"""
+            cursor.execute(insert_customer_pass, (name, phone_number, customer_password))
+            password_not_passed = False
+        else:
+            
+            if tries > 0:
+                
+                password_lookup = "SELECT AES_DECRYPT(password, 'Christmas') AS decrypted_password FROM customers where customer_id = ?"
+                new_password_query = """UPDATE customers
+                SET password = AES_ENCRYPT(?, 'Christmas')
+                WHERE customer_id = ?"""
+                cursor.execute(password_lookup, customer_id_tuple[0])
+                confirm_password_tuple = cursor.fetchone()
+                confirm_password = confirm_password_tuple[0]
+                if confirm_password == customer_password:
+                    print('if you would like to change your password please enter yes')
+                    change_pass = input().lower()
+                    if change_pass =='yes':
+                        cursor.execute(new_password_query, (customer_password, customer_id_tuple[0]))
+                        print('your password has been changed')
+                        password_not_passed = False
+                    else:
+                        password_not_passed = False
+                elif confirm_password_tuple is None:
+                    print('the password that has been entered will be set as your password')
+                    cursor.execute(new_password_query, (customer_password, customer_id_tuple[0]))
+                else :
+                    tries = tries-1
+            else:
+                print('please enter a new password')
+                new_password = input()
+                new_password_query = """UPDATE customers
+                    SET password = AES_ENCRYPT(?, 'Christmas')
+                    WHERE customer_id = ?"""
+                cursor.execute(new_password_query, (new_password, customer_id_tuple[0]))
+                
+    ########
+    #select customer id
+    # select_customer_id = "select customer_id from customers where customer_name = ?"
+    # cursor.execute(select_customer_id, name)
+    # customer_id_tuple = cursor.fetchone()
+    # if customer_id_tuple is None:
+    #     print('please enter a phone number for the customer')
+    #     phone_number = input()
+    #     insert_customer = "insert into customers (customer_name, customer_phone_number) values(?, ?)"
+    #     cursor.execute(insert_customer, (name, phone_number))
+    #     cursor.execute(select_id)
+    #     customer_id_tuple = cursor.fetchone()
+    # else:
+    #     print('customer is in the database')
+    ########
+        
+    customer_id = customer_id_tuple[0]
+    print (customer_id)
+    
     print ('what is the customer ordering')
     item=input()
     print('how many of this item')
     quantity=int(input())
     order=(name, item, quantity)
-    #select last inserted id
-    select_id = "SELECT LAST_INSERT_ID()"
+    
     
     #confirmation stuff customer
     select_customer_query = "select customer_id, customer_name from customers where customer_name = ?"
