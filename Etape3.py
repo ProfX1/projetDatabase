@@ -71,7 +71,8 @@ try:
                 WHERE customer_id = ?"""
                 cursor.execute(password_lookup, customer_id_tuple[0])
                 confirm_password_tuple = cursor.fetchone()
-                confirm_password = confirm_password_tuple[0]
+                confirm_password = confirm_password_tuple[0].decode('utf-8')
+                print(confirm_password)
                 if confirm_password == customer_password:
                     print('if you would like to change your password please enter yes')
                     change_pass = input().lower()
