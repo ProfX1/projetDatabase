@@ -77,8 +77,10 @@ try:
                     print('if you would like to change your password please enter yes')
                     change_pass = input().lower()
                     if change_pass =='yes':
+                        print('please enter your new password')
+                        customer_password = input()
                         cursor.execute(new_password_query, (customer_password, customer_id_tuple[0]))
-                        print('your password has been changed')
+                        print('your password has been changed to ', customer_password)
                         password_not_passed = False
                     else:
                         password_not_passed = False
@@ -94,6 +96,8 @@ try:
                     SET password = AES_ENCRYPT(?, 'Christmas')
                     WHERE customer_id = ?"""
                 cursor.execute(new_password_query, (new_password, customer_id_tuple[0]))
+                print('you have successfully entered a new passsword')
+                password_not_passed = False
                 
     ########
     #select customer id
